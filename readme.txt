@@ -2,7 +2,7 @@
 Contributors: aiimagedisclosure
 Tags: ai, ai act, disclosure, labeling, compliance
 Requires at least: 6.4
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 1.3.0
 License: GPLv2 or later

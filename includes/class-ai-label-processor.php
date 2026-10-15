@@ -203,7 +203,7 @@ abstract class AI_Label_Image_Processor {
 			return new WP_Error( 'ai_label_write_failed', __( 'The labelled image was not written.', 'ai-image-disclosure' ) );
 		}
 
-		if ( @rename( $temp, $path ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_rename, WordPress.PHP.NoSilencedErrors.Discouraged -- the copy fallback below handles failure.
+		if ( AI_Label_Backup::filesystem()->move( $temp, $path, true ) ) {
 			return true;
 		}
 

@@ -16,6 +16,30 @@ defined( 'ABSPATH' ) || exit;
 class AI_Label_Backup {
 
 	/**
+	 * Direct-method filesystem for plugin-owned files.
+	 *
+	 * The global WP_Filesystem may need FTP credentials, which cron and CLI jobs cannot
+	 * supply, so this always uses the direct method.
+	 *
+	 * @return WP_Filesystem_Direct
+	 */
+	public static function filesystem() {
+		static $fs = null;
+		if ( null === $fs ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
+			require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
+			if ( ! defined( 'FS_CHMOD_DIR' ) ) {
+				define( 'FS_CHMOD_DIR', ( fileperms( ABSPATH ) & 0777 | 0755 ) );
+			}
+			if ( ! defined( 'FS_CHMOD_FILE' ) ) {
+				define( 'FS_CHMOD_FILE', ( fileperms( ABSPATH . 'index.php' ) & 0777 | 0644 ) );
+			}
+			$fs = new WP_Filesystem_Direct( null );
+		}
+		return $fs;
+	}
+
+	/**
 	 * Absolute path of the backup root, without trailing slash.
 	 *
 	 * @return string
@@ -252,8 +276,8 @@ class AI_Label_Backup {
 				wp_delete_file( $file );
 			}
 		}
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_rmdir -- plugin-owned, now-empty directory.
-		@rmdir( $dir ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- non-fatal if the dir is not empty.
+		// Non-fatal if the dir is not empty.
+		self::filesystem()->rmdir( $dir );
 		return true;
 	}
 

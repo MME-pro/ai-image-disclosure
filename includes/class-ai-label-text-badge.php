@@ -401,7 +401,7 @@ class AI_Label_Text_Badge {
 		if ( ! $written ) {
 			return new WP_Error( 'ai_label_text_write', __( 'The rendered text badge could not be written to disk.', 'ai-image-disclosure' ) );
 		}
-		if ( ! @rename( $temp, $path ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_rename, WordPress.PHP.NoSilencedErrors.Discouraged -- copy fallback below.
+		if ( ! AI_Label_Backup::filesystem()->move( $temp, $path, true ) ) {
 			if ( ! copy( $temp, $path ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_copy -- plugin-owned cache file.
 				wp_delete_file( $temp );
 				return new WP_Error( 'ai_label_text_write', __( 'The rendered text badge could not be moved into the cache folder.', 'ai-image-disclosure' ) );

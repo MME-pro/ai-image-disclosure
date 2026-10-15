@@ -141,7 +141,9 @@ class AI_Label_Admin {
 					'noSelection'  => __( 'Select at least one image first.', 'ai-image-disclosure' ),
 					'noTypes'      => __( 'No label type has a badge image yet. Set one up under Media → AI Image Disclosure.', 'ai-image-disclosure' ),
 					'queued'       => __( 'Queued. Processing runs in the background — you can leave this page.', 'ai-image-disclosure' ),
+					/* translators: 1: processed count, 2: total count. */
 					'progress'     => __( 'Processed %1$d of %2$d', 'ai-image-disclosure' ),
+					/* translators: 1: succeeded count, 2: failed count. */
 					'done'         => __( 'Finished: %1$d succeeded, %2$d failed.', 'ai-image-disclosure' ),
 					'confirmRestore' => __( 'Restore the original file? The badge will be removed from the image bytes.', 'ai-image-disclosure' ),
 					'error'        => __( 'Something went wrong.', 'ai-image-disclosure' ),

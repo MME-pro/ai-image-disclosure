@@ -1,7 +1,6 @@
 <?php
 /**
  * Plugin Name:       AI Image Disclosure
- * Plugin URI:        https://example.com/ai-image-disclosure
  * Description:       Bakes an AI-disclosure badge (EU AI Act Art. 50) directly into Media Library image files, with full backup, revert and cache purging.
  * Version:           1.3.0
  * Requires at least: 6.4
@@ -10,7 +9,6 @@
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       ai-image-disclosure
- * Domain Path:       /languages
  *
  * @package AI_Image_Disclosure
  */

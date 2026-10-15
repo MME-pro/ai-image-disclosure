@@ -288,6 +288,31 @@ class AI_Label_Badge_Registry {
 	}
 
 	/**
+	 * The badge PNG shipped with the plugin for a type slug, used until one is uploaded.
+	 *
+	 * @param string $slug    Type slug.
+	 * @param string $variant Variant key.
+	 * @return string Absolute path, or '' when the plugin ships no default for this slug.
+	 */
+	public static function bundled_badge_path( $slug, $variant ) {
+		$variant = 'dark' === $variant || 'dark2' === $variant ? 'dark' : 'light';
+		$path    = AI_LABEL_DIR . 'assets/badges/' . sanitize_file_name( $slug . '-' . $variant . '.png' );
+		return is_readable( $path ) ? $path : '';
+	}
+
+	/**
+	 * Public URL of a bundled default badge.
+	 *
+	 * @param string $slug    Type slug.
+	 * @param string $variant Variant key.
+	 * @return string URL, or '' when there is none.
+	 */
+	public static function bundled_badge_url( $slug, $variant ) {
+		$path = self::bundled_badge_path( $slug, $variant );
+		return '' === $path ? '' : AI_LABEL_URL . 'assets/badges/' . wp_basename( $path );
+	}
+
+	/**
 	 * Stores (or replaces) a badge variant for a label type.
 	 *
 	 * @param int    $type_id       Type id.
@@ -467,6 +492,21 @@ class AI_Label_Badge_Registry {
 
 		$badge = self::resolve_badge( $type->id, $variant );
 		if ( ! $badge ) {
+			$bundled = self::bundled_badge_path( $type->slug, $variant );
+			if ( '' !== $bundled ) {
+				$variant = 'dark' === $variant || 'dark2' === $variant ? 'dark' : 'light';
+				return array(
+					'path'     => $bundled,
+					'mode'     => 'image',
+					'variant'  => $variant,
+					// Hash of the file, so a redesigned default flags labelled images for re-labelling.
+					'token'    => 'bundled-' . substr( (string) md5_file( $bundled ), 0, 12 ),
+					'asset_id' => 0,
+					'row_id'   => 0,
+					'text'     => '',
+				);
+			}
+
 			return new WP_Error(
 				'ai_label_no_badge',
 				sprintf(

@@ -115,7 +115,7 @@ class AI_Label_Admin {
 			$types[] = array(
 				'slug'      => $type->slug,
 				'name'      => $type->name,
-				'has_badge' => (bool) AI_Label_Badge_Registry::get_badges( $type->id ),
+				'has_badge' => AI_Label_Badge_Registry::get_badges( $type->id ) || '' !== AI_Label_Badge_Registry::bundled_badge_path( $type->slug, 'light' ),
 			);
 		}
 
@@ -555,6 +555,8 @@ class AI_Label_Admin {
 		);
 		?>
 		<div class="wrap ai-label-wrap">
+			<?php // Core moves admin notices after this marker; without it they land inside the flex header beside the title. ?>
+			<hr class="wp-header-end">
 			<div class="ai-label-header">
 				<div class="ai-label-header__title">
 					<?php $this->render_brand_mark(); ?>
@@ -1421,16 +1423,23 @@ class AI_Label_Admin {
 		$badge    = isset( $badges[ $key ] ) ? $badges[ $key ] : null;
 		$badge_id = $badge ? (int) $badge->attachment_id : 0;
 		$dark     = ( false !== strpos( $key, 'dark' ) );
+		$bundled  = $badges ? '' : AI_Label_Badge_Registry::bundled_badge_url( $type->slug, $key );
 		?>
 		<div class="ai-label-variant">
 			<h5><?php echo esc_html( $label ); ?></h5>
 			<div class="ai-label-variant__preview <?php echo $dark ? 'ai-label-variant__preview--dark' : ''; ?>">
 				<?php if ( $badge_id ) : ?>
 					<?php echo wp_kses_post( wp_get_attachment_image( $badge_id, array( 160, 160 ), false, array( 'class' => 'ai-label-badge-preview' ) ) ); ?>
+				<?php elseif ( $bundled ) : ?>
+					<img src="<?php echo esc_url( $bundled ); ?>" alt="" class="ai-label-badge-preview">
 				<?php else : ?>
 					<p class="ai-label-meta"><?php esc_html_e( 'No badge yet', 'ai-image-disclosure' ); ?></p>
 				<?php endif; ?>
 			</div>
+
+			<?php if ( $bundled ) : ?>
+				<p class="ai-label-meta"><?php esc_html_e( 'Built-in default — upload a PNG to replace it.', 'ai-image-disclosure' ); ?></p>
+			<?php endif; ?>
 
 			<?php if ( $badge_id && ! AI_Label_Badge_Registry::png_has_alpha( (string) get_attached_file( $badge_id ) ) ) : ?>
 				<p class="ai-label-warn"><?php esc_html_e( 'No transparency channel — this badge will show as a solid rectangle.', 'ai-image-disclosure' ); ?></p>

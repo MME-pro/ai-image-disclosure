@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class AI_Label_Install {
 
-	const DB_VERSION      = '1.2.0';
+	const DB_VERSION      = '1.3.1';
 	const OPTION_DB_VER   = 'ai_label_db_version';
 	const CRON_QUEUE_TICK = 'ai_label_queue_tick';
 
@@ -86,6 +86,12 @@ class AI_Label_Install {
 		if ( '' !== $installed && version_compare( $installed, '1.2.0', '<' ) ) {
 			self::migrate_text_shape_defaults();
 		}
+		if ( '' !== $installed && version_compare( $installed, '1.3.0', '<' ) ) {
+			self::add_missing_default_types();
+		}
+		if ( '' !== $installed && version_compare( $installed, '1.3.1', '<' ) ) {
+			self::switch_untouched_defaults_to_image();
+		}
 
 		update_option( self::OPTION_DB_VER, self::DB_VERSION, false );
 	}
@@ -112,6 +118,27 @@ class AI_Label_Install {
 				$config[ $key ] = $defaults[ $key ];
 			}
 			AI_Label_Badge_Registry::update_type( $type->id, array( 'text_config' => $config ) );
+		}
+	}
+
+	/**
+	 * Earlier versions seeded the default type as a generated text label. Now that badge
+	 * images ship with the plugin, a default type still on its untouched text settings is
+	 * moved to its built-in badge image. A customised text label is left exactly as it is.
+	 */
+	private static function switch_untouched_defaults_to_image() {
+		foreach ( self::default_types() as $default ) {
+			$type = AI_Label_Badge_Registry::get_type_by_slug( $default['slug'] );
+			if ( ! $type || 'text' !== AI_Label_Badge_Registry::mode_of( $type ) ) {
+				continue;
+			}
+			if ( '' === AI_Label_Badge_Registry::bundled_badge_path( $type->slug, 'light' ) ) {
+				continue;
+			}
+			if ( AI_Label_Badge_Registry::text_config_of( $type ) !== AI_Label_Text_Badge::default_config( $type->name ) ) {
+				continue;
+			}
+			AI_Label_Badge_Registry::update_type( $type->id, array( 'badge_mode' => 'image' ) );
 		}
 	}
 
@@ -192,27 +219,51 @@ class AI_Label_Install {
 	}
 
 	/**
-	 * Seeds a single ready-to-use label type. It defaults to a generated text label so the
-	 * plugin is usable immediately, with no badge image to design or upload first; switching
-	 * it to an uploaded PNG — or adding more types — is a click away.
+	 * The label types every install starts with. Each uses the badge PNGs bundled in
+	 * assets/badges/ until the admin uploads their own, so the plugin is usable immediately.
+	 *
+	 * @return array
+	 */
+	private static function default_types() {
+		return array(
+			array(
+				'slug'       => 'ai-generated',
+				'name'       => __( 'AI-generated', 'ai-image-disclosure' ),
+				'alt_suffix' => __( '(AI-generated image)', 'ai-image-disclosure' ),
+				'sort_order' => 0,
+			),
+			array(
+				'slug'       => 'ai-modified',
+				'name'       => __( 'AI-modified', 'ai-image-disclosure' ),
+				'alt_suffix' => __( '(AI-modified image)', 'ai-image-disclosure' ),
+				'sort_order' => 1,
+			),
+		);
+	}
+
+	/**
+	 * Seeds the default label types on a fresh install.
 	 */
 	public static function seed_label_types() {
 		if ( AI_Label_Badge_Registry::count_types() > 0 ) {
 			return;
 		}
+		self::add_missing_default_types();
+	}
 
-		$name = __( 'AI-generated', 'ai-image-disclosure' );
-
-		AI_Label_Badge_Registry::insert_type(
-			array(
-				'slug'        => 'ai-generated',
-				'name'        => $name,
-				'alt_suffix'  => __( '(AI-generated image)', 'ai-image-disclosure' ),
-				'badge_mode'  => is_wp_error( AI_Label_Text_Badge::is_available() ) ? 'image' : 'text',
-				'text_config' => AI_Label_Text_Badge::default_config( $name ),
-				'sort_order'  => 0,
-			)
-		);
+	/**
+	 * Adds any default label type whose slug does not exist yet. Existing types — and any
+	 * edits made to them — are left alone.
+	 */
+	private static function add_missing_default_types() {
+		foreach ( self::default_types() as $type ) {
+			if ( AI_Label_Badge_Registry::get_type_by_slug( $type['slug'] ) ) {
+				continue;
+			}
+			$type['badge_mode']  = 'image';
+			$type['text_config'] = AI_Label_Text_Badge::default_config( $type['name'] );
+			AI_Label_Badge_Registry::insert_type( $type );
+		}
 	}
 }
 

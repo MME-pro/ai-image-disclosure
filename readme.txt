@@ -26,7 +26,11 @@ Labelling is always a deliberate, manual action: you select the images, choose t
 
 **Two kinds of label — image or text**
 
-Every label type can either composite a badge PNG you upload, or render its own text label on the server: wording, text and background colour, opacity, corner radius and border, with separate colours for light and dark backgrounds. Text labels need no design work and no image file at all, so you can start disclosing immediately and swap in a designed badge later. They are rendered at high resolution and scaled down onto the image, so they stay crisp, and they get their own scale setting because a wide text strip needs more width than a square seal to stay readable.
+Every label type can either composite a badge PNG, or render its own text label on the server: wording, text and background colour, opacity, corner radius and border, with separate colours for light and dark backgrounds. Text labels need no design work and no image file at all, so you can start disclosing immediately and swap in a designed badge later. They are rendered at high resolution and scaled down onto the image, so they stay crisp, and they get their own scale setting because a wide text strip needs more width than a square seal to stay readable.
+
+**Ready-made badges included**
+
+The plugin ships with two label types, *AI-generated* and *AI-modified*, each with a ready-made badge in a light and a dark version, so you can label images straight after activation. Upload your own PNG for either variant at any time to replace the default.
 
 **Re-labelling never stacks badges**
 
@@ -132,6 +136,8 @@ Remove the token from the settings screen (type `delete` into the field) to stop
 == Changelog ==
 
 = 1.3.0 =
+* Added built-in badge images for light and dark backgrounds, and a new default *AI-modified* label type alongside *AI-generated*. Label types without an uploaded badge use the built-in images automatically.
+* Admin notices from other plugins now appear above the plugin header instead of beside the title.
 * Renamed the plugin to AI Image Disclosure. The plugin folder, main file, text domain and admin page slug changed to match; settings, label types, badge registry, job log, attachment metadata and backups are all untouched and keep working.
 
 = 1.2.6 =

@@ -121,7 +121,7 @@ class AI_Label_GD_Processor extends AI_Label_Image_Processor {
 				'ai_label_gd_load',
 				sprintf(
 					/* translators: %s: MIME type. */
-					__( 'GD could not open this image (%s). The file may be damaged or the format unsupported by this PHP build.', 'ai-image-disclosure' ),
+					__( 'GD could not open this image (%s). The file may be damaged or the format unsupported by this PHP build.', 'mme-ai-image-disclosure' ),
 					$mime
 				)
 			);
@@ -164,7 +164,7 @@ class AI_Label_GD_Processor extends AI_Label_Image_Processor {
 	 */
 	public function sample_region_brightness( $x, $y, $w, $h ) {
 		if ( ! $this->image ) {
-			return new WP_Error( 'ai_label_no_image', __( 'No image loaded.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_no_image', __( 'No image loaded.', 'mme-ai-image-disclosure' ) );
 		}
 
 		$img_w = imagesx( $this->image );
@@ -216,7 +216,7 @@ class AI_Label_GD_Processor extends AI_Label_Image_Processor {
 	 */
 	public function composite( $badge_path, $x, $y, $w, $h ) {
 		if ( ! $this->image ) {
-			return new WP_Error( 'ai_label_no_image', __( 'No image loaded.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_no_image', __( 'No image loaded.', 'mme-ai-image-disclosure' ) );
 		}
 
 		$badge = $this->create_from_file( $badge_path, 'image/png' );
@@ -247,7 +247,7 @@ class AI_Label_GD_Processor extends AI_Label_Image_Processor {
 		imagedestroy( $badge );
 
 		if ( ! $ok ) {
-			return new WP_Error( 'ai_label_gd_composite', __( 'GD could not composite the badge onto the image.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_gd_composite', __( 'GD could not composite the badge onto the image.', 'mme-ai-image-disclosure' ) );
 		}
 		return true;
 	}
@@ -261,7 +261,7 @@ class AI_Label_GD_Processor extends AI_Label_Image_Processor {
 	 */
 	public function resize( $w, $h ) {
 		if ( ! $this->image ) {
-			return new WP_Error( 'ai_label_no_image', __( 'No image loaded.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_no_image', __( 'No image loaded.', 'mme-ai-image-disclosure' ) );
 		}
 
 		$w      = max( 1, (int) $w );
@@ -276,7 +276,7 @@ class AI_Label_GD_Processor extends AI_Label_Image_Processor {
 		$ok = imagecopyresampled( $target, $this->image, 0, 0, 0, 0, $w, $h, imagesx( $this->image ), imagesy( $this->image ) );
 		if ( ! $ok ) {
 			imagedestroy( $target );
-			return new WP_Error( 'ai_label_gd_resize', __( 'GD could not resize the image.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_gd_resize', __( 'GD could not resize the image.', 'mme-ai-image-disclosure' ) );
 		}
 
 		imagedestroy( $this->image );
@@ -294,7 +294,7 @@ class AI_Label_GD_Processor extends AI_Label_Image_Processor {
 	 */
 	public function save( $path, $mime = null, $quality = 90 ) {
 		if ( ! $this->image ) {
-			return new WP_Error( 'ai_label_no_image', __( 'No image loaded.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_no_image', __( 'No image loaded.', 'mme-ai-image-disclosure' ) );
 		}
 
 		$mime    = $mime ? $mime : $this->mime;
@@ -333,7 +333,7 @@ class AI_Label_GD_Processor extends AI_Label_Image_Processor {
 				'ai_label_write_failed',
 				sprintf(
 					/* translators: %s: MIME type. */
-					__( 'GD could not write the labelled image as %s.', 'ai-image-disclosure' ),
+					__( 'GD could not write the labelled image as %s.', 'mme-ai-image-disclosure' ),
 					$mime
 				)
 			);

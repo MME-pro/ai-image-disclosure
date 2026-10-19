@@ -1,5 +1,5 @@
 /**
- * AI Image Disclosure — admin behaviour.
+ * MME AI Image Disclosure — admin behaviour.
  *
  * Vanilla JS plus the Media Library's own jQuery/wp.media, so no framework is added to the
  * client's admin stack.

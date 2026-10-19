@@ -43,7 +43,7 @@ class AI_Label_REST {
 		}
 		return new WP_Error(
 			'ai_label_forbidden',
-			__( 'You are not allowed to manage AI content labels.', 'ai-image-disclosure' ),
+			__( 'You are not allowed to manage AI content labels.', 'mme-ai-image-disclosure' ),
 			array( 'status' => rest_authorization_required_code() )
 		);
 	}
@@ -173,12 +173,12 @@ class AI_Label_REST {
 	public function handle_apply( WP_REST_Request $request ) {
 		$ids = $request->get_param( 'attachment_ids' );
 		if ( ! $ids ) {
-			return new WP_Error( 'ai_label_no_images', __( 'No images were selected.', 'ai-image-disclosure' ), array( 'status' => 400 ) );
+			return new WP_Error( 'ai_label_no_images', __( 'No images were selected.', 'mme-ai-image-disclosure' ), array( 'status' => 400 ) );
 		}
 
 		$type = AI_Label_Badge_Registry::get_type_by_slug( $request->get_param( 'label_type' ) );
 		if ( ! $type ) {
-			return new WP_Error( 'ai_label_bad_type', __( 'Unknown label type.', 'ai-image-disclosure' ), array( 'status' => 400 ) );
+			return new WP_Error( 'ai_label_bad_type', __( 'Unknown label type.', 'mme-ai-image-disclosure' ), array( 'status' => 400 ) );
 		}
 		$ready = AI_Label_Badge_Registry::type_is_ready( $type );
 		if ( is_wp_error( $ready ) ) {
@@ -237,7 +237,7 @@ class AI_Label_REST {
 	private function queue_simple( WP_REST_Request $request, $action ) {
 		$ids = $request->get_param( 'attachment_ids' );
 		if ( ! $ids ) {
-			return new WP_Error( 'ai_label_no_images', __( 'No images were selected.', 'ai-image-disclosure' ), array( 'status' => 400 ) );
+			return new WP_Error( 'ai_label_no_images', __( 'No images were selected.', 'mme-ai-image-disclosure' ), array( 'status' => 400 ) );
 		}
 
 		$batch_id = $this->jobs->enqueue_batch( $ids, $action );

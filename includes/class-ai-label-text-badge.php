@@ -147,7 +147,7 @@ class AI_Label_Text_Badge {
 		if ( ! wp_mkdir_p( $dir ) ) {
 			return new WP_Error(
 				'ai_label_cache_dir',
-				__( 'Could not create the badge render folder inside wp-content/uploads.', 'ai-image-disclosure' )
+				__( 'Could not create the badge render folder inside wp-content/uploads.', 'mme-ai-image-disclosure' )
 			);
 		}
 
@@ -192,7 +192,7 @@ class AI_Label_Text_Badge {
 
 		return new WP_Error(
 			'ai_label_no_font',
-			__( 'No usable font file was found on this server. Enter the full path to a .ttf or .otf font under Settings → Font file to use generated text labels.', 'ai-image-disclosure' )
+			__( 'No usable font file was found on this server. Enter the full path to a .ttf or .otf font under Settings → Font file to use generated text labels.', 'mme-ai-image-disclosure' )
 		);
 	}
 
@@ -204,10 +204,10 @@ class AI_Label_Text_Badge {
 	 */
 	public static function validate_font( $path ) {
 		if ( ! preg_match( '/\.(ttf|otf|ttc)$/i', $path ) ) {
-			return new WP_Error( 'ai_label_font_type', __( 'The font must be a .ttf, .otf or .ttc file.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_font_type', __( 'The font must be a .ttf, .otf or .ttc file.', 'mme-ai-image-disclosure' ) );
 		}
 		if ( ! is_readable( $path ) || ! is_file( $path ) ) {
-			return new WP_Error( 'ai_label_font_missing', __( 'That font file cannot be read by PHP.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_font_missing', __( 'That font file cannot be read by PHP.', 'mme-ai-image-disclosure' ) );
 		}
 		return true;
 	}
@@ -270,7 +270,7 @@ class AI_Label_Text_Badge {
 		}
 		return new WP_Error(
 			'ai_label_no_text_renderer',
-			__( 'Neither GD with FreeType nor ImagickDraw is available, so text labels cannot be rendered on this host. Upload a badge PNG instead.', 'ai-image-disclosure' )
+			__( 'Neither GD with FreeType nor ImagickDraw is available, so text labels cannot be rendered on this host. Upload a badge PNG instead.', 'mme-ai-image-disclosure' )
 		);
 	}
 
@@ -286,7 +286,7 @@ class AI_Label_Text_Badge {
 		$config  = self::sanitize_config( $config, isset( $config['text'] ) ? $config['text'] : '' );
 
 		if ( '' === trim( (string) $config['text'] ) ) {
-			return new WP_Error( 'ai_label_no_text', __( 'This label type has no label text yet.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_no_text', __( 'This label type has no label text yet.', 'mme-ai-image-disclosure' ) );
 		}
 
 		$available = self::is_available();
@@ -353,7 +353,7 @@ class AI_Label_Text_Badge {
 
 		$box = imagettfbbox( $size, 0, $font, $text );
 		if ( ! $box ) {
-			return new WP_Error( 'ai_label_text_measure', __( 'The font could not be used to measure the label text.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_text_measure', __( 'The font could not be used to measure the label text.', 'mme-ai-image-disclosure' ) );
 		}
 
 		$text_w = (int) ceil( abs( $box[2] - $box[0] ) );
@@ -399,12 +399,12 @@ class AI_Label_Text_Badge {
 		imagedestroy( $image );
 
 		if ( ! $written ) {
-			return new WP_Error( 'ai_label_text_write', __( 'The rendered text badge could not be written to disk.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_text_write', __( 'The rendered text badge could not be written to disk.', 'mme-ai-image-disclosure' ) );
 		}
 		if ( ! AI_Label_Backup::filesystem()->move( $temp, $path, true ) ) {
 			if ( ! copy( $temp, $path ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_copy -- plugin-owned cache file.
 				wp_delete_file( $temp );
-				return new WP_Error( 'ai_label_text_write', __( 'The rendered text badge could not be moved into the cache folder.', 'ai-image-disclosure' ) );
+				return new WP_Error( 'ai_label_text_write', __( 'The rendered text badge could not be moved into the cache folder.', 'mme-ai-image-disclosure' ) );
 			}
 			wp_delete_file( $temp );
 		}
@@ -512,7 +512,7 @@ class AI_Label_Text_Badge {
 			$image->clear();
 
 			if ( ! $written ) {
-				return new WP_Error( 'ai_label_text_write', __( 'The rendered text badge could not be written to disk.', 'ai-image-disclosure' ) );
+				return new WP_Error( 'ai_label_text_write', __( 'The rendered text badge could not be written to disk.', 'mme-ai-image-disclosure' ) );
 			}
 			return $path;
 		} catch ( Exception $e ) {

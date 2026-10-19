@@ -98,7 +98,7 @@ class AI_Label_Imagick_Processor extends AI_Label_Image_Processor {
 					'ai_label_unreadable',
 					sprintf(
 						/* translators: %s: file name. */
-						__( 'The file %s cannot be read.', 'ai-image-disclosure' ),
+						__( 'The file %s cannot be read.', 'mme-ai-image-disclosure' ),
 						wp_basename( $path )
 					)
 				);
@@ -110,7 +110,7 @@ class AI_Label_Imagick_Processor extends AI_Label_Image_Processor {
 				$image->clear();
 				return new WP_Error(
 					'ai_label_animated',
-					__( 'Animated images cannot be labelled without discarding their animation.', 'ai-image-disclosure' )
+					__( 'Animated images cannot be labelled without discarding their animation.', 'mme-ai-image-disclosure' )
 				);
 			}
 
@@ -161,7 +161,7 @@ class AI_Label_Imagick_Processor extends AI_Label_Image_Processor {
 	 */
 	public function sample_region_brightness( $x, $y, $w, $h ) {
 		if ( ! $this->image ) {
-			return new WP_Error( 'ai_label_no_image', __( 'No image loaded.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_no_image', __( 'No image loaded.', 'mme-ai-image-disclosure' ) );
 		}
 		try {
 			$region = clone $this->image;
@@ -207,7 +207,7 @@ class AI_Label_Imagick_Processor extends AI_Label_Image_Processor {
 	 */
 	public function composite( $badge_path, $x, $y, $w, $h ) {
 		if ( ! $this->image ) {
-			return new WP_Error( 'ai_label_no_image', __( 'No image loaded.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_no_image', __( 'No image loaded.', 'mme-ai-image-disclosure' ) );
 		}
 		try {
 			$badge = new Imagick();
@@ -232,7 +232,7 @@ class AI_Label_Imagick_Processor extends AI_Label_Image_Processor {
 	 */
 	public function resize( $w, $h ) {
 		if ( ! $this->image ) {
-			return new WP_Error( 'ai_label_no_image', __( 'No image loaded.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_no_image', __( 'No image loaded.', 'mme-ai-image-disclosure' ) );
 		}
 		try {
 			$this->image->resizeImage( max( 1, (int) $w ), max( 1, (int) $h ), Imagick::FILTER_LANCZOS, 1 );
@@ -252,7 +252,7 @@ class AI_Label_Imagick_Processor extends AI_Label_Image_Processor {
 	 */
 	public function save( $path, $mime = null, $quality = 90 ) {
 		if ( ! $this->image ) {
-			return new WP_Error( 'ai_label_no_image', __( 'No image loaded.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_no_image', __( 'No image loaded.', 'mme-ai-image-disclosure' ) );
 		}
 		$mime = $mime ? $mime : $this->mime;
 
@@ -279,7 +279,7 @@ class AI_Label_Imagick_Processor extends AI_Label_Image_Processor {
 			// the live image (PRD §6.2 — fail loud, never leave a half-written file).
 			$temp = $path . '.ai-label-tmp';
 			if ( ! $this->image->writeImage( $temp ) ) {
-				return new WP_Error( 'ai_label_write_failed', __( 'Imagick could not write the labelled image.', 'ai-image-disclosure' ) );
+				return new WP_Error( 'ai_label_write_failed', __( 'Imagick could not write the labelled image.', 'mme-ai-image-disclosure' ) );
 			}
 
 			return $this->move_into_place( $temp, $path );

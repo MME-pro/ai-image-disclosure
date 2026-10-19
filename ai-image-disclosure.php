@@ -1,14 +1,15 @@
 <?php
 /**
- * Plugin Name:       AI Image Disclosure
+ * Plugin Name:       MME AI Image Disclosure
  * Description:       Bakes an AI-disclosure badge (EU AI Act Art. 50) directly into Media Library image files, with full backup, revert and cache purging.
  * Version:           1.3.0
  * Requires at least: 6.4
  * Requires PHP:      7.4
- * Author:            Agency
+ * Author:            MME Pro
+ * Author URI:        https://mme-pro.de
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       ai-image-disclosure
+ * Text Domain:       mme-ai-image-disclosure
  *
  * @package AI_Image_Disclosure
  */
@@ -73,7 +74,6 @@ final class AI_Label_Plugin {
 		AI_Label_Cache_Purge::init();
 		AI_Label_Webp::init();
 
-		add_action( 'init', array( $this, 'load_textdomain' ) );
 		add_filter( 'user_has_cap', array( $this, 'map_capability' ), 10, 4 );
 		add_action( 'plugins_loaded', array( AI_Label_Install::class, 'maybe_upgrade' ) );
 		add_action( 'wp_generate_attachment_metadata', array( $this, 'flag_external_regeneration' ), 5, 3 );
@@ -82,10 +82,6 @@ final class AI_Label_Plugin {
 			require_once AI_LABEL_DIR . 'includes/class-ai-label-cli.php';
 			AI_Label_CLI::register();
 		}
-	}
-
-	public function load_textdomain() {
-		load_plugin_textdomain( 'ai-image-disclosure', false, dirname( plugin_basename( AI_LABEL_FILE ) ) . '/languages' );
 	}
 
 	/**

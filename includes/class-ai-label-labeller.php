@@ -133,18 +133,18 @@ class AI_Label_Labeller {
 		// --- Validate the attachment -------------------------------------------------
 		$post = get_post( $attachment_id );
 		if ( ! $post || 'attachment' !== $post->post_type ) {
-			return self::error( 'validate', __( 'That attachment does not exist.', 'ai-image-disclosure' ) );
+			return self::error( 'validate', __( 'That attachment does not exist.', 'mme-ai-image-disclosure' ) );
 		}
 
 		$primary = get_attached_file( $attachment_id );
 		if ( ! $primary || ! file_exists( $primary ) ) {
-			return self::error( 'validate', __( 'The image file is missing on disk.', 'ai-image-disclosure' ) );
+			return self::error( 'validate', __( 'The image file is missing on disk.', 'mme-ai-image-disclosure' ) );
 		}
 
 		// --- Resolve label type and badge --------------------------------------------
 		$type = AI_Label_Badge_Registry::get_type_by_slug( $args['label_type'] );
 		if ( ! $type ) {
-			return self::error( 'validate', __( 'Unknown label type.', 'ai-image-disclosure' ) );
+			return self::error( 'validate', __( 'Unknown label type.', 'mme-ai-image-disclosure' ) );
 		}
 
 		$positions = AI_Label_Settings::positions();
@@ -164,7 +164,7 @@ class AI_Label_Labeller {
 		$dimensions = $processor->get_dimensions();
 		if ( $dimensions['width'] < 1 || $dimensions['height'] < 1 ) {
 			$processor->destroy();
-			return self::error( 'open', __( 'The image reports zero dimensions.', 'ai-image-disclosure' ) );
+			return self::error( 'open', __( 'The image reports zero dimensions.', 'mme-ai-image-disclosure' ) );
 		}
 
 		// --- Decide the contrast variant ---------------------------------------------
@@ -184,7 +184,7 @@ class AI_Label_Labeller {
 		$probe_size = wp_getimagesize( $probe['path'] );
 		if ( ! $probe_size ) {
 			$processor->destroy();
-			return self::error( 'badge', __( 'The badge image could not be read.', 'ai-image-disclosure' ) );
+			return self::error( 'badge', __( 'The badge image could not be read.', 'mme-ai-image-disclosure' ) );
 		}
 
 		// A text badge is a wide, short strip, so scaling it like a square seal would make
@@ -207,7 +207,7 @@ class AI_Label_Labeller {
 				'geometry',
 				sprintf(
 					/* translators: 1: computed badge width, 2: legibility floor. */
-					__( 'The badge would only be %1$dpx wide on this image, below the %2$dpx legibility floor. Raise the badge scale or the minimum badge size in settings.', 'ai-image-disclosure' ),
+					__( 'The badge would only be %1$dpx wide on this image, below the %2$dpx legibility floor. Raise the badge scale or the minimum badge size in settings.', 'mme-ai-image-disclosure' ),
 					$geometry['width'],
 					(int) $geometry_settings['legibility_floor']
 				)
@@ -224,12 +224,12 @@ class AI_Label_Labeller {
 			);
 			if ( is_wp_error( $brightness ) ) {
 				$variant = 'light';
-				$notes[] = __( 'Brightness sampling failed; used the light-background badge.', 'ai-image-disclosure' );
+				$notes[] = __( 'Brightness sampling failed; used the light-background badge.', 'mme-ai-image-disclosure' );
 			} else {
 				$variant = ( $brightness >= (int) $settings['brightness_threshold'] ) ? 'light' : 'dark';
 				$notes[] = sprintf(
 					/* translators: 1: measured brightness, 2: chosen variant. */
-					__( 'Sampled brightness %1$d/255, chose the "%2$s" badge.', 'ai-image-disclosure' ),
+					__( 'Sampled brightness %1$d/255, chose the "%2$s" badge.', 'mme-ai-image-disclosure' ),
 					(int) round( $brightness ),
 					$variant
 				);
@@ -254,7 +254,7 @@ class AI_Label_Labeller {
 				return array(
 					'status'  => 'skipped',
 					'code'    => 'already_labelled',
-					'message' => __( 'Already labelled with this type, position and badge — nothing to do.', 'ai-image-disclosure' ),
+					'message' => __( 'Already labelled with this type, position and badge — nothing to do.', 'mme-ai-image-disclosure' ),
 					'notes'   => $notes,
 				);
 			}
@@ -265,7 +265,7 @@ class AI_Label_Labeller {
 			if ( 'error' === $restored['status'] ) {
 				return self::error( 'restore_before_reapply', $restored['message'] );
 			}
-			$notes[] = __( 'Restored the original before re-applying, so no badge is stacked.', 'ai-image-disclosure' );
+			$notes[] = __( 'Restored the original before re-applying, so no badge is stacked.', 'mme-ai-image-disclosure' );
 
 			// Paths and dimensions may have changed — start the whole apply over.
 			$args['force'] = false;
@@ -282,7 +282,7 @@ class AI_Label_Labeller {
 			$processor->destroy();
 			return self::error(
 				'guard',
-				__( 'This image is still marked as labelled, so it was not touched. Restore the original first, then apply the new label.', 'ai-image-disclosure' )
+				__( 'This image is still marked as labelled, so it was not touched. Restore the original first, then apply the new label.', 'mme-ai-image-disclosure' )
 			);
 		}
 
@@ -291,7 +291,7 @@ class AI_Label_Labeller {
 		$original = wp_get_original_image_path( $attachment_id );
 		if ( $original && $original !== $primary && file_exists( $original ) ) {
 			$targets[] = $original;
-			$notes[]   = __( 'This image has a separate full-resolution original; it was labelled too.', 'ai-image-disclosure' );
+			$notes[]   = __( 'This image has a separate full-resolution original; it was labelled too.', 'mme-ai-image-disclosure' );
 		}
 
 		// --- Backup ------------------------------------------------------------------
@@ -372,14 +372,14 @@ class AI_Label_Labeller {
 			$webp    = AI_Label_Webp::generate_sidecars( $attachment_id );
 			$notes[] = sprintf(
 				/* translators: %d: number of files. */
-				_n( 'Generated %d WebP sidecar file.', 'Generated %d WebP sidecar files.', count( $webp ), 'ai-image-disclosure' ),
+				_n( 'Generated %d WebP sidecar file.', 'Generated %d WebP sidecar files.', count( $webp ), 'mme-ai-image-disclosure' ),
 				count( $webp )
 			);
 		}
 
 		// --- Alt text (PRD §5.7) ------------------------------------------------------
 		if ( $this->append_alt_suffix( $attachment_id, $type ) ) {
-			$notes[] = __( 'Added the disclosure suffix to the alt text.', 'ai-image-disclosure' );
+			$notes[] = __( 'Added the disclosure suffix to the alt text.', 'mme-ai-image-disclosure' );
 		}
 
 		// --- Persist state ------------------------------------------------------------
@@ -424,7 +424,7 @@ class AI_Label_Labeller {
 			'code'    => 'labelled',
 			'message' => sprintf(
 				/* translators: 1: label type name, 2: position. */
-				__( 'Labelled as "%1$s" (%2$s).', 'ai-image-disclosure' ),
+				__( 'Labelled as "%1$s" (%2$s).', 'mme-ai-image-disclosure' ),
 				$type->name,
 				isset( $positions[ $position ] ) ? $positions[ $position ] : $position
 			),
@@ -446,12 +446,12 @@ class AI_Label_Labeller {
 
 		$data = self::get_attachment_data( $attachment_id );
 		if ( empty( $data['backups'] ) && empty( $data['backup_path'] ) ) {
-			return self::error( 'restore', __( 'No backup is recorded for this image.', 'ai-image-disclosure' ) );
+			return self::error( 'restore', __( 'No backup is recorded for this image.', 'mme-ai-image-disclosure' ) );
 		}
 
 		$primary = get_attached_file( $attachment_id );
 		if ( ! $primary ) {
-			return self::error( 'restore', __( 'The attachment has no file path.', 'ai-image-disclosure' ) );
+			return self::error( 'restore', __( 'The attachment has no file path.', 'mme-ai-image-disclosure' ) );
 		}
 
 		$backups = ! empty( $data['backups'] ) ? (array) $data['backups'] : array( wp_basename( $primary ) => $data['backup_path'] );
@@ -500,7 +500,7 @@ class AI_Label_Labeller {
 		return array(
 			'status'  => 'success',
 			'code'    => 'restored',
-			'message' => __( 'Original restored. The backup file was kept.', 'ai-image-disclosure' ),
+			'message' => __( 'Original restored. The backup file was kept.', 'mme-ai-image-disclosure' ),
 			'notes'   => $notes,
 		);
 	}
@@ -514,7 +514,7 @@ class AI_Label_Labeller {
 	public function reapply( $attachment_id ) {
 		$data = self::get_attachment_data( $attachment_id );
 		if ( empty( $data['label_type'] ) ) {
-			return self::error( 'reapply', __( 'This image has no recorded label to re-apply.', 'ai-image-disclosure' ) );
+			return self::error( 'reapply', __( 'This image has no recorded label to re-apply.', 'mme-ai-image-disclosure' ) );
 		}
 
 		return $this->apply(
@@ -623,7 +623,7 @@ class AI_Label_Labeller {
 
 		$full = wp_getimagesize( $primary );
 		if ( ! $full ) {
-			$notes[] = __( 'Could not read the full-size image, so sub-sizes were left untouched.', 'ai-image-disclosure' );
+			$notes[] = __( 'Could not read the full-size image, so sub-sizes were left untouched.', 'mme-ai-image-disclosure' );
 			return array(
 				'notes'       => $notes,
 				'clean_sizes' => $clean_names,
@@ -673,7 +673,7 @@ class AI_Label_Labeller {
 			if ( is_wp_error( $editor ) ) {
 				$notes[] = sprintf(
 					/* translators: %s: error message. */
-					__( 'Sub-sizes could not be regenerated: %s', 'ai-image-disclosure' ),
+					__( 'Sub-sizes could not be regenerated: %s', 'mme-ai-image-disclosure' ),
 					$editor->get_error_message()
 				);
 			} else {
@@ -685,7 +685,7 @@ class AI_Label_Labeller {
 					}
 					$notes[] = sprintf(
 						/* translators: %d: number of sizes. */
-						_n( 'Regenerated %d image size from the labelled original.', 'Regenerated %d image sizes from the labelled original.', count( $resized ), 'ai-image-disclosure' ),
+						_n( 'Regenerated %d image size from the labelled original.', 'Regenerated %d image sizes from the labelled original.', count( $resized ), 'mme-ai-image-disclosure' ),
 						count( $resized )
 					);
 				}
@@ -710,7 +710,7 @@ class AI_Label_Labeller {
 						'%1$d size skipped the badge (below the %2$dpx legibility floor) and was rebuilt from the unlabelled original.',
 						'%1$d sizes skipped the badge (below the %2$dpx legibility floor) and were rebuilt from the unlabelled original.',
 						count( $built ),
-						'ai-image-disclosure'
+						'mme-ai-image-disclosure'
 					),
 					count( $built ),
 					$floor

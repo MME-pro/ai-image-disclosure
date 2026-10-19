@@ -228,14 +228,14 @@ class AI_Label_Install {
 		return array(
 			array(
 				'slug'       => 'ai-generated',
-				'name'       => __( 'AI-generated', 'ai-image-disclosure' ),
-				'alt_suffix' => __( '(AI-generated image)', 'ai-image-disclosure' ),
+				'name'       => __( 'AI-generated', 'mme-ai-image-disclosure' ),
+				'alt_suffix' => __( '(AI-generated image)', 'mme-ai-image-disclosure' ),
 				'sort_order' => 0,
 			),
 			array(
 				'slug'       => 'ai-modified',
-				'name'       => __( 'AI-modified', 'ai-image-disclosure' ),
-				'alt_suffix' => __( '(AI-modified image)', 'ai-image-disclosure' ),
+				'name'       => __( 'AI-modified', 'mme-ai-image-disclosure' ),
+				'alt_suffix' => __( '(AI-modified image)', 'mme-ai-image-disclosure' ),
 				'sort_order' => 1,
 			),
 		);
@@ -273,7 +273,7 @@ add_filter(
 		if ( ! isset( $schedules['ai_label_minute'] ) ) {
 			$schedules['ai_label_minute'] = array(
 				'interval' => 60,
-				'display'  => __( 'Every minute (AI Image Disclosure queue)', 'ai-image-disclosure' ),
+				'display'  => __( 'Every minute (MME AI Image Disclosure queue)', 'mme-ai-image-disclosure' ),
 			);
 		}
 		return $schedules;

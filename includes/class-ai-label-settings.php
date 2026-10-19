@@ -238,10 +238,10 @@ class AI_Label_Settings {
 	 */
 	public static function positions() {
 		return array(
-			'top-left'     => __( 'Top left', 'ai-image-disclosure' ),
-			'top-right'    => __( 'Top right', 'ai-image-disclosure' ),
-			'bottom-left'  => __( 'Bottom left', 'ai-image-disclosure' ),
-			'bottom-right' => __( 'Bottom right', 'ai-image-disclosure' ),
+			'top-left'     => __( 'Top left', 'mme-ai-image-disclosure' ),
+			'top-right'    => __( 'Top right', 'mme-ai-image-disclosure' ),
+			'bottom-left'  => __( 'Bottom left', 'mme-ai-image-disclosure' ),
+			'bottom-right' => __( 'Bottom right', 'mme-ai-image-disclosure' ),
 		);
 	}
 
@@ -253,8 +253,8 @@ class AI_Label_Settings {
 	 */
 	public static function variants() {
 		return array(
-			'light' => __( 'For light backgrounds', 'ai-image-disclosure' ),
-			'dark'  => __( 'For dark backgrounds', 'ai-image-disclosure' ),
+			'light' => __( 'For light backgrounds', 'mme-ai-image-disclosure' ),
+			'dark'  => __( 'For dark backgrounds', 'mme-ai-image-disclosure' ),
 		);
 	}
 }

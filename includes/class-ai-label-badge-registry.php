@@ -77,14 +77,14 @@ class AI_Label_Badge_Registry {
 
 		$name = isset( $data['name'] ) ? sanitize_text_field( $data['name'] ) : '';
 		if ( '' === $name ) {
-			return new WP_Error( 'ai_label_type_name', __( 'A label type needs a name.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_type_name', __( 'A label type needs a name.', 'mme-ai-image-disclosure' ) );
 		}
 		$slug = sanitize_title( ! empty( $data['slug'] ) ? $data['slug'] : $name );
 		if ( '' === $slug ) {
-			return new WP_Error( 'ai_label_type_slug', __( 'A label type needs a valid slug.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_type_slug', __( 'A label type needs a valid slug.', 'mme-ai-image-disclosure' ) );
 		}
 		if ( self::get_type_by_slug( $slug ) ) {
-			return new WP_Error( 'ai_label_type_exists', __( 'A label type with that slug already exists.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_type_exists', __( 'A label type with that slug already exists.', 'mme-ai-image-disclosure' ) );
 		}
 
 		$text_config = AI_Label_Text_Badge::sanitize_config(
@@ -108,7 +108,7 @@ class AI_Label_Badge_Registry {
 		);
 
 		if ( ! $ok ) {
-			return new WP_Error( 'ai_label_db', __( 'Could not save the label type.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_db', __( 'Could not save the label type.', 'mme-ai-image-disclosure' ) );
 		}
 		return (int) $wpdb->insert_id;
 	}
@@ -126,14 +126,14 @@ class AI_Label_Badge_Registry {
 
 		$type = self::get_type( $id );
 		if ( ! $type ) {
-			return new WP_Error( 'ai_label_type_missing', __( 'That label type no longer exists.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_type_missing', __( 'That label type no longer exists.', 'mme-ai-image-disclosure' ) );
 		}
 
 		$fields = array();
 		if ( isset( $data['name'] ) ) {
 			$name = sanitize_text_field( $data['name'] );
 			if ( '' === $name ) {
-				return new WP_Error( 'ai_label_type_name', __( 'A label type needs a name.', 'ai-image-disclosure' ) );
+				return new WP_Error( 'ai_label_type_name', __( 'A label type needs a name.', 'mme-ai-image-disclosure' ) );
 			}
 			$fields['name'] = substr( $name, 0, 100 );
 		}
@@ -171,7 +171,7 @@ class AI_Label_Badge_Registry {
 
 		$type = self::get_type( $id );
 		if ( ! $type ) {
-			return new WP_Error( 'ai_label_type_missing', __( 'That label type no longer exists.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_type_missing', __( 'That label type no longer exists.', 'mme-ai-image-disclosure' ) );
 		}
 
 		$in_use = self::count_attachments_using_type( $type->slug );
@@ -184,7 +184,7 @@ class AI_Label_Badge_Registry {
 						'This label type is still applied to %d image. Restore the original(s) first.',
 						'This label type is still applied to %d images. Restore the originals first.',
 						$in_use,
-						'ai-image-disclosure'
+						'mme-ai-image-disclosure'
 					),
 					$in_use
 				)
@@ -328,10 +328,10 @@ class AI_Label_Badge_Registry {
 		$variants      = AI_Label_Settings::variants();
 
 		if ( ! self::get_type( $type_id ) ) {
-			return new WP_Error( 'ai_label_type_missing', __( 'That label type no longer exists.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_type_missing', __( 'That label type no longer exists.', 'mme-ai-image-disclosure' ) );
 		}
 		if ( ! isset( $variants[ $variant ] ) ) {
-			return new WP_Error( 'ai_label_variant', __( 'Unknown badge variant.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_variant', __( 'Unknown badge variant.', 'mme-ai-image-disclosure' ) );
 		}
 
 		$check = self::validate_badge_file( $attachment_id );
@@ -391,13 +391,13 @@ class AI_Label_Badge_Registry {
 	public static function validate_badge_file( $attachment_id ) {
 		$path = get_attached_file( (int) $attachment_id );
 		if ( ! $path || ! file_exists( $path ) ) {
-			return new WP_Error( 'ai_label_badge_missing', __( 'The selected badge file could not be found.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_badge_missing', __( 'The selected badge file could not be found.', 'mme-ai-image-disclosure' ) );
 		}
 
 		$sniffed = wp_getimagesize( $path );
 		$mime    = is_array( $sniffed ) && ! empty( $sniffed['mime'] ) ? $sniffed['mime'] : '';
 		if ( 'image/png' !== $mime ) {
-			return new WP_Error( 'ai_label_badge_mime', __( 'Badges must be PNG files. The selected file is not a PNG.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_badge_mime', __( 'Badges must be PNG files. The selected file is not a PNG.', 'mme-ai-image-disclosure' ) );
 		}
 
 		return true;
@@ -467,7 +467,7 @@ class AI_Label_Badge_Registry {
 	 */
 	public static function resolve_badge_source( $type, $variant ) {
 		if ( ! is_object( $type ) ) {
-			return new WP_Error( 'ai_label_type_missing', __( 'That label type no longer exists.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_type_missing', __( 'That label type no longer exists.', 'mme-ai-image-disclosure' ) );
 		}
 
 		if ( 'text' === self::mode_of( $type ) ) {
@@ -511,7 +511,7 @@ class AI_Label_Badge_Registry {
 				'ai_label_no_badge',
 				sprintf(
 					/* translators: %s: label type name. */
-					__( 'No badge image has been uploaded for the label type "%s" yet. Upload a PNG, or switch that type to a generated text label.', 'ai-image-disclosure' ),
+					__( 'No badge image has been uploaded for the label type "%s" yet. Upload a PNG, or switch that type to a generated text label.', 'mme-ai-image-disclosure' ),
 					$type->name
 				)
 			);
@@ -519,7 +519,7 @@ class AI_Label_Badge_Registry {
 
 		$path = get_attached_file( (int) $badge->attachment_id );
 		if ( ! $path || ! file_exists( $path ) ) {
-			return new WP_Error( 'ai_label_badge_missing', __( 'The badge file is missing from the Media Library.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_badge_missing', __( 'The badge file is missing from the Media Library.', 'mme-ai-image-disclosure' ) );
 		}
 
 		return array(

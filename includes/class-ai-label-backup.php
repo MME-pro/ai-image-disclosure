@@ -94,7 +94,7 @@ class AI_Label_Backup {
 				'ai_label_backup_dir',
 				sprintf(
 					/* translators: %s: directory path. */
-					__( 'Could not create the backup directory %s. Check uploads folder permissions.', 'ai-image-disclosure' ),
+					__( 'Could not create the backup directory %s. Check uploads folder permissions.', 'mme-ai-image-disclosure' ),
 					$dir
 				)
 			);
@@ -117,7 +117,7 @@ class AI_Label_Backup {
 				'ai_label_source_missing',
 				sprintf(
 					/* translators: %s: file path. */
-					__( 'The image file %s is missing on disk.', 'ai-image-disclosure' ),
+					__( 'The image file %s is missing on disk.', 'mme-ai-image-disclosure' ),
 					wp_basename( $file )
 				)
 			);
@@ -138,7 +138,7 @@ class AI_Label_Backup {
 				'ai_label_backup_failed',
 				sprintf(
 					/* translators: %s: file name. */
-					__( 'Could not write a backup of %s.', 'ai-image-disclosure' ),
+					__( 'Could not write a backup of %s.', 'mme-ai-image-disclosure' ),
 					wp_basename( $file )
 				)
 			);
@@ -157,10 +157,10 @@ class AI_Label_Backup {
 	public static function restore_file( $relative_backup, $live_path ) {
 		$source = self::absolute( $relative_backup );
 		if ( '' === $source || ! file_exists( $source ) ) {
-			return new WP_Error( 'ai_label_backup_missing', __( 'The backup file is missing, so the original cannot be restored.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_backup_missing', __( 'The backup file is missing, so the original cannot be restored.', 'mme-ai-image-disclosure' ) );
 		}
 		if ( ! copy( $source, $live_path ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_copy -- see backup_file().
-			return new WP_Error( 'ai_label_restore_failed', __( 'Could not copy the backup back over the live file.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_restore_failed', __( 'Could not copy the backup back over the live file.', 'mme-ai-image-disclosure' ) );
 		}
 		return true;
 	}
@@ -265,7 +265,7 @@ class AI_Label_Backup {
 		$attachment_id = (int) $attachment_id;
 		$data          = AI_Label_Labeller::get_attachment_data( $attachment_id );
 		if ( ! empty( $data['status'] ) && 'labelled' === $data['status'] ) {
-			return new WP_Error( 'ai_label_backup_in_use', __( 'This image is still labelled — its backup is the only copy of the original.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_backup_in_use', __( 'This image is still labelled — its backup is the only copy of the original.', 'mme-ai-image-disclosure' ) );
 		}
 		$dir = self::root() . '/' . $attachment_id;
 		if ( ! is_dir( $dir ) ) {
@@ -292,7 +292,7 @@ class AI_Label_Backup {
 
 		$files = array(
 			'index.php'   => "<?php\n// Silence is golden.\n",
-			'.htaccess'   => "# AI Image Disclosure backups — not for public access.\n<IfModule mod_authz_core.c>\n\tRequire all denied\n</IfModule>\n<IfModule !mod_authz_core.c>\n\tOrder allow,deny\n\tDeny from all\n</IfModule>\n<IfModule mod_headers.c>\n\tHeader set X-Robots-Tag \"noindex, nofollow\"\n</IfModule>\n",
+			'.htaccess'   => "# MME AI Image Disclosure backups — not for public access.\n<IfModule mod_authz_core.c>\n\tRequire all denied\n</IfModule>\n<IfModule !mod_authz_core.c>\n\tOrder allow,deny\n\tDeny from all\n</IfModule>\n<IfModule mod_headers.c>\n\tHeader set X-Robots-Tag \"noindex, nofollow\"\n</IfModule>\n",
 			'web.config'  => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<configuration>\n\t<system.webServer>\n\t\t<authorization>\n\t\t\t<deny users=\"*\" />\n\t\t</authorization>\n\t</system.webServer>\n</configuration>\n",
 		);
 

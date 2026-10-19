@@ -1,5 +1,5 @@
-=== AI Image Disclosure ===
-Contributors: aiimagedisclosure
+=== MME AI Image Disclosure ===
+Contributors: mmeprowp
 Tags: ai, ai act, disclosure, labeling, compliance
 Requires at least: 6.4
 Tested up to: 7.1
@@ -61,9 +61,9 @@ Changing a label — different type, different corner, edited text, new badge fi
 
 == Installation ==
 
-1. Upload the plugin to `/wp-content/plugins/ai-image-disclosure` and activate it.
+1. Upload the plugin to `/wp-content/plugins/mme-ai-image-disclosure` and activate it.
 2. Activation creates one label type, *AI-generated*, already set to a generated text label — so you can label an image straight away without designing anything.
-3. Optional: under **Media → AI Image Disclosure → Label types & badges**, adjust the wording and colours, or switch that type to an uploaded badge PNG (light-background and dark-background variants).
+3. Optional: under **Media → MME AI Image Disclosure → Label types & badges**, adjust the wording and colours, or switch that type to an uploaded badge PNG (light-background and dark-background variants).
 4. Review **Settings** — badge scale, edge padding, auto-contrast threshold and the width down to which image sizes keep the badge.
 5. Select images in the Media Library and use the **Add AI Label** bulk action.
 
@@ -93,7 +93,7 @@ Run the optimiser's bulk optimise after labelling. If an optimiser (or any thumb
 
 = I don't have a badge image. Can I still label images? =
 
-Yes. Open **Media → AI Image Disclosure → Label types & badges**, set that label type's badge source to *Generated text label*, type the wording and save. The plugin renders the label itself using a font on the server, so no upload and no design work is needed. If no font is found automatically, enter the path to a .ttf or .otf file under Settings → Font file.
+Yes. Open **Media → MME AI Image Disclosure → Label types & badges**, set that label type's badge source to *Generated text label*, type the wording and save. The plugin renders the label itself using a font on the server, so no upload and no design work is needed. If no font is found automatically, enter the path to a .ttf or .otf file under Settings → Font file.
 
 = What happens if I label an image that is already labelled? =
 
@@ -138,7 +138,7 @@ Remove the token from the settings screen (type `delete` into the field) to stop
 = 1.3.0 =
 * Added built-in badge images for light and dark backgrounds, and a new default *AI-modified* label type alongside *AI-generated*. Label types without an uploaded badge use the built-in images automatically.
 * Admin notices from other plugins now appear above the plugin header instead of beside the title.
-* Renamed the plugin to AI Image Disclosure. The plugin folder, main file, text domain and admin page slug changed to match; settings, label types, badge registry, job log, attachment metadata and backups are all untouched and keep working.
+* Renamed the plugin to MME AI Image Disclosure. The text domain changed to match; settings, label types, badge registry, job log, attachment metadata and backups are all untouched and keep working.
 
 = 1.2.6 =
 * Redesigned the tab bar: a white rail with an icon per section, the active tab filled with the accent gradient, and a live counter on Job log while background jobs are running. Collapses to icons only on small screens.
@@ -192,7 +192,7 @@ Remove the token from the settings screen (type `delete` into the field) to stop
 == Upgrade notice ==
 
 = 1.3.0 =
-The plugin is now called AI Image Disclosure. No data or settings change.
+The plugin is now called MME AI Image Disclosure. No data or settings change.
 
 = 1.2.6 =
 Redesigned tab bar and plugin mark; badge variants reduced to light and dark.

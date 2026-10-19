@@ -61,7 +61,7 @@ abstract class AI_Label_Image_Processor {
 
 		return new WP_Error(
 			'ai_label_no_backend',
-			__( 'Neither the Imagick nor the GD PHP extension is available, so images cannot be processed on this host.', 'ai-image-disclosure' )
+			__( 'Neither the Imagick nor the GD PHP extension is available, so images cannot be processed on this host.', 'mme-ai-image-disclosure' )
 		);
 	}
 
@@ -166,7 +166,7 @@ abstract class AI_Label_Image_Processor {
 				'ai_label_unreadable',
 				sprintf(
 					/* translators: %s: file name. */
-					__( 'The file %s cannot be read.', 'ai-image-disclosure' ),
+					__( 'The file %s cannot be read.', 'mme-ai-image-disclosure' ),
 					wp_basename( $path )
 				)
 			);
@@ -178,8 +178,8 @@ abstract class AI_Label_Image_Processor {
 				'ai_label_unsupported_mime',
 				sprintf(
 					/* translators: %s: MIME type. */
-					__( 'Images of type %s cannot be labelled.', 'ai-image-disclosure' ),
-					'' !== $mime ? $mime : __( 'unknown', 'ai-image-disclosure' )
+					__( 'Images of type %s cannot be labelled.', 'mme-ai-image-disclosure' ),
+					'' !== $mime ? $mime : __( 'unknown', 'mme-ai-image-disclosure' )
 				)
 			);
 		}
@@ -200,7 +200,7 @@ abstract class AI_Label_Image_Processor {
 	 */
 	protected function move_into_place( $temp, $path ) {
 		if ( ! file_exists( $temp ) ) {
-			return new WP_Error( 'ai_label_write_failed', __( 'The labelled image was not written.', 'ai-image-disclosure' ) );
+			return new WP_Error( 'ai_label_write_failed', __( 'The labelled image was not written.', 'mme-ai-image-disclosure' ) );
 		}
 
 		if ( AI_Label_Backup::filesystem()->move( $temp, $path, true ) ) {
@@ -213,7 +213,7 @@ abstract class AI_Label_Image_Processor {
 		}
 
 		wp_delete_file( $temp );
-		return new WP_Error( 'ai_label_move_failed', __( 'Could not move the labelled image into place. Check the file permissions of the uploads folder.', 'ai-image-disclosure' ) );
+		return new WP_Error( 'ai_label_move_failed', __( 'Could not move the labelled image into place. Check the file permissions of the uploads folder.', 'mme-ai-image-disclosure' ) );
 	}
 
 	/**
